@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Jenis Laporan"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spReport"
+            android:layout_weight="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:layout_marginBottom="10dp">
+        </Spinner>
+
+        <Button
+            android:id="@+id/btnPDF"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textAllCaps="false"
+            android:layout_marginLeft="5dp"
+            android:textColor="#fff"
+            android:background="@drawable/button_color_state"
+            android:text="Export"/>
+
+    </LinearLayout>
+
+</LinearLayout>

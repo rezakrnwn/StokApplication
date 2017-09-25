@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/etTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="List Stok Barang"
+                android:textSize="17dp"
+                android:textColor="#fff"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="20dp"
+                android:gravity="right">
+
+                <ImageButton
+                    android:id="@+id/btnLogout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:gravity="left"
+                    android:src="@drawable/ic_logout_30px"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/llTop"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:text="Halo "/>
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tvUsername"
+            android:textAllCaps="false"
+            android:background="@drawable/button_color_state"
+            android:drawableLeft="@drawable/ic_plus_30px"
+            android:textColor="#fff"
+            android:paddingLeft="10dp"
+            android:text="Tambah Data"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:padding="20dp"
+            card_view:cardCornerRadius="4dp">
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_search_black_18dp"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:background="@null"
+                android:hint="Pencarian"/>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_below="@id/llTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_below="@id/llTop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="0dp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvStudent"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbars="none" />
+
+                </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="17dp"
+        android:src="@drawable/fab_add"
+        app:fab_colorNormal="#43A047"
+        app:fab_colorPressed="#1B5E20"
+        app:fab_colorRipple="#99FFFFFF"
+        app:fab_showShadow="true"
+        app:fab_shadowColor="#66000000"
+        app:fab_shadowRadius="4dp"
+        app:fab_shadowXOffset="1dp"
+        app:fab_shadowYOffset="3dp"
+        app:fab_size="normal"
+        app:fab_showAnimation="@anim/fab_scale_up"
+        app:fab_hideAnimation="@anim/fab_scale_down"
+        app:fab_label=""/>
+
+</RelativeLayout>
