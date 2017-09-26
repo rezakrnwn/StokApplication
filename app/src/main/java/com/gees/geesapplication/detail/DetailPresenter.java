@@ -68,19 +68,13 @@ public class DetailPresenter implements BasePresenter<DetailView> {
 
     DetailView detailView;
     StokAdapter stokAdapter;
-    ShelfAdapter shelfAdapter;
     List<Stok> stokList = new ArrayList<>();
-    String nameSupplier;
-    String customerName;
-    //List<ShelfStokData> shelfData = new ArrayList<>();
 
     List<ShelfDatum> shelfDatumList = new ArrayList<>();
     List<SupplierDatum> supplierDatumList = new ArrayList<>();
     List<CustomerDatum> customerDatumList = new ArrayList<>();
-    List<CustomerDatum> customerData = new ArrayList<>();
 
     LinearLayoutManager mLayoutManager;
-    LinearLayoutManager mLayoutManagerShelf;
 
     private static Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 24,
             Font.BOLD);
@@ -276,52 +270,6 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         });
     }
 
-    /*public void getDetailStokByShelf(final boolean refresh, final int idBarang,
-                                     final int idShelf, String token){
-
-        Retrofit retrofit = ApiClient.getClient(detailView.getContext());
-        ApiService apiService = retrofit.create(ApiService.class);
-        Call<StokById> itemsCall = apiService.getStokById(idBarang,idShelf,token);
-        itemsCall.enqueue(new Callback<StokById>() {
-            @Override
-            public void onResponse(Call<StokById> call, Response<StokById> response) {
-
-                Log.d("M A S U K","response");
-
-                if(response.body() != null){
-                    StokById items = response.body();
-                    List<Stok> s = items.getStok();
-
-                    if(items.getStatus()){
-
-                        stokList.clear();
-                        stokList.addAll(s);
-                        stokAdapter.notifyDataSetChanged();
-                    }else{
-                        Toast.makeText(detailView.getContext(), "Data Kosong",
-                                Toast.LENGTH_LONG).show();
-                    }
-                    if(refresh) {
-                        detailView.processFinish();
-                    }
-                }else{
-                    if(refresh) {
-                        detailView.processFinish();
-                    }
-                    Toast.makeText(detailView.getContext(), "Cek koneksi internet Anda",
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<StokById> call, Throwable t) {
-                Log.d("M A S U K","failure");
-            }
-
-        });
-    }*/
-
     public void getSyncAdapter(RecyclerView recyclerView){
         mLayoutManager = new LinearLayoutManager(detailView.getContext());
         stokAdapter = new StokAdapter(stokList);
@@ -329,60 +277,6 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(stokAdapter);
-    }
-
-    /*public void getListShelf(final int id, String token){
-        *//*AddShelf addShelf = new AddShelf("0","Semua");
-        stringList.add(addShelf);*//*
-        shelfData.clear();
-        *//*ShelfStokData sfd = new ShelfStokData("0","Semua");
-        shelfData.add(sfd);*//*
-        Retrofit retrofit = ApiClient.getClient(detailView.getContext());
-        ApiService apiService = retrofit.create(ApiService.class);
-        Call<ShelfStok> itemsCall = apiService.getShelfStok(id,token);
-        itemsCall.enqueue(new Callback<ShelfStok>() {
-            @Override
-            public void onResponse(Call<ShelfStok> call, Response<ShelfStok> response) {
-
-                Log.d("M A S U K","response");
-
-                if(response.body() != null){
-                    ShelfStok shelfStok = response.body();
-                    List<ShelfStokData> shelfStokData2 = shelfStok.getData();
-
-                    if(shelfStok.getStatus()){
-                        //shelfList.add("Semua");
-                        *//*Log.d("SizeShelf ", ""+shelfData.size());
-                        Log.d("SizeShelf2 ", ""+shelfStokData2.size());*//*
-                        //shelfData.addAll(shelfStokData2);
-                        //shelfAdapter.notifyDataSetChanged();
-                    }else{
-                        Toast.makeText(detailView.getContext(), "Data Kosong",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Toast.makeText(detailView.getContext(), "Cek koneksi internet Anda",
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ShelfStok> call, Throwable t) {
-                Log.d("M A S U K","failure");
-            }
-
-        });
-    }
-*/
-    public void getSyncAdapterShelf(RecyclerView recyclerView){
-        mLayoutManagerShelf = new LinearLayoutManager(detailView.getContext(),LinearLayoutManager.HORIZONTAL,false);
-        //shelfAdapter = new ShelfAdapter(shelfData);
-        //stokAdapter = new StokAdapter(stokList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(mLayoutManagerShelf);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(shelfAdapter);
     }
 
     void createPdf(int reportType,String namaBarang, String jumlahStok, List<Stok> stokList) {
@@ -746,67 +640,8 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         });
     }
 
-    String getDetailSupplier(String id,String token){
-        Retrofit retrofit = ApiClient.getClient(detailView.getContext());
-        ApiService apiService = retrofit.create(ApiService.class);
-        Call<Supplier> supplierCall = apiService.getDetailSupplier(id,token);
-        supplierCall.enqueue(new Callback<Supplier>() {
-            @Override
-            public void onResponse(Call<Supplier> call, Response<Supplier> response) {
-
-                if (response.body()!=null){
-                    Supplier supplier = response.body();
-                    if(supplier.getStatus()){
-                        List<SupplierDatum> supplierDatum = supplier.getData();
-                        Log.d("Supplier name ",""+supplierDatum.get(0).getNama());
-                        nameSupplier = supplierDatum.get(0).getNama();
-                    }else{
-                    }
-
-                }else{
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Supplier> call, Throwable t) {
-                detailView.onError();
-            }
-        });
-        return nameSupplier;
-    }
-
-    String getDetailCustomer(String id,String token){
-        Retrofit retrofit = ApiClient.getClient(detailView.getContext());
-        ApiService apiService = retrofit.create(ApiService.class);
-        Call<Customer> customerCall = apiService.getCustomerDetail(id,token);
-        customerCall.enqueue(new Callback<Customer>() {
-            @Override
-            public void onResponse(Call<Customer> call, Response<Customer> response) {
-                if(response.body()!=null){
-                    Customer customer = response.body();
-                    if(customer.getStatus()){
-                        List<CustomerDatum> customerData = customer.getData();
-                        customerName = customerData.get(0).getNama();
-                    }else{
-                        detailView.onEmpty();
-                    }
-                }else{
-                    detailView.noConnection();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Customer> call, Throwable t) {
-
-            }
-        });
-        return customerName;
-    }
-
     public interface DetailPresenterInterface{
         void getStokList(List<Stok> stokList);
-        void getCustomerDetail(String name);
     };
 
 }

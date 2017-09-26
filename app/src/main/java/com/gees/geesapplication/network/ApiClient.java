@@ -26,7 +26,6 @@ import static android.content.ContentValues.TAG;
 
 public class ApiClient implements BaseView {
 
-    //public static final String BASE_URL = "http://ideasgotappscom-over.cloud.revoluz.io/";
     public static final String BASE_URL = "http://berkahjayapamungkas.com/";
     private static OkHttpClient httpClient = null;
     private static Retrofit retrofit = null;

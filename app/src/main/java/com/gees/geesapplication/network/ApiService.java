@@ -18,6 +18,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by SERVER on 11/09/2017.
@@ -122,6 +123,12 @@ public interface ApiService {
 
     @GET("stokapi/v1/customer/detail")
     Call<Customer> getCustomerDetail(
+            @Query("id_customer") String idCustomer,
+            @Query("access_token") String token
+    );
+
+    @GET("stokapi/v1/customer/detail")
+    Observable<Customer> getRxCustomer(
             @Query("id_customer") String idCustomer,
             @Query("access_token") String token
     );

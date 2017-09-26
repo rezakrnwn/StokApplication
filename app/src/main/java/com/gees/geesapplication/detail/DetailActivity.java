@@ -94,6 +94,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     long reportId;
     String dateTime;
     String strDate;
+    String strTime;
     String customerName = null;
 
     //Shelf
@@ -127,6 +128,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         ButterKnife.bind(this);
         getBundle();
         initToolbar();
+        strTime = initCurrentTime();
+        strDate = initCurrentDate();
 
         detailPresenter.attachView(this);
         detailPresenter.getSyncAdapter(rvStok);
@@ -134,10 +137,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
                 sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
         detailPresenter.getCustomer(0,sharedPreferenceLogin.
                 getValue(getApplicationContext()).getString("apiToken",""));
-        /*detailPresenter.getSyncAdapterShelf(rvShelf);
-        detailPresenter.getListShelf(20,
-                sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));*/
-
 
         tvNamaBarang.setText(itemName);
         tvStockBarang.setText(myFormat(itemStock));
@@ -221,6 +220,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     }
 
     void inflaterStok(final int code,String title){
+        strDate = null;
+        strTime = null;
         detailPresenter.getShelf(sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -255,8 +256,17 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         String currentDate = sdf.format(Calendar.getInstance().getTime());
         String currentTime = df.format(Calendar.getInstance().getTime());
 
+        DateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        String currentDate2 = sdf2.format(Calendar.getInstance().getTime());
+        String currentTime2 = df2.format(Calendar.getInstance().getTime());
+
         etDateStok.setText(currentDate);
         etTimeStok.setText(currentTime);
+
+        strTime = currentTime2;
+        strDate = currentDate2;
 
         if(code == 1){
             detailPresenter.getSupplier(sharedPreferenceLogin.
@@ -310,6 +320,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         etDateStok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                strDate = null;
                 new DatePickerDialog(DetailActivity.this, date, calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -321,6 +332,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                strTime = null;
                 Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -329,6 +341,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         etTimeStok.setText( selectedHour + ":" + selectedMinute);
+                        strTime = selectedHour + ":" + selectedMinute + ":00";
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -344,7 +357,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 famMenu.clearAnimation();
-                dateTime = strDate+" "+etTimeStok.getText().toString();
+                dateTime = strDate +" "+ strTime;
                 if (code == 1 && !etStokBarang.getText().toString().isEmpty()){
                     double stokBarang = Double.parseDouble(etStokBarang.getText().toString());
                     detailPresenter.addStock(itemId,shelfId,supplierId,stokBarang,dateTime,
@@ -368,6 +381,24 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    String initCurrentDate(){
+        String currentDate = "";
+        String dateFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat,Locale.getDefault());
+        currentDate = sdf.format(calendar.getTime());
+
+        return currentDate;
+    }
+
+    String initCurrentTime(){
+        String currentTime = "";
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        currentTime = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + ":" +
+                calendar.get(Calendar.SECOND);
+
+        return currentTime;
     }
 
     void inflaterExport(){
@@ -447,12 +478,10 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     @OnClick(R.id.btnExport)
     void btnExport() {
         inflaterExport();
-        //detailPresenter.createPdf(itemName,strItemStock,stokList);
     }
 
     @Override
     public void processFinish() {
-        //progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -503,7 +532,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     @Override
     public void getCustomer(List<CustomerDatum> customerDatumList) {
         this.customerDatumList = customerDatumList;
-        Log.v("AmissV",""+customerDatumList.size());
+        Log.v("-",""+customerDatumList.size());
     }
 
     @Override
@@ -562,10 +591,5 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     @Override
     public void getStokList(List<Stok> stokList) {
         this.stokList = stokList;
-    }
-
-    @Override
-    public void getCustomerDetail(String name) {
-
     }
 }
