@@ -17,23 +17,21 @@ public class SharedPreferenceLogin {
         super();
     }
 
-    public void save(Context context, String apiToken, String name) {
+    public void save(Context context, String apiToken, String name, int roleId, String roleName, int company) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
 
         settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
-        editor = settings.edit(); //2
+        editor = settings.edit();
 
         editor.putBoolean(LOGGEDIN_SHARED_PREF, true);
-        editor.putString("apiToken", apiToken); //3
+        editor.putString("apiToken", apiToken);
         editor.putString("name", name);
-        /*editor.putString("email", email);
-        editor.putString("imagePath", imagePath);
-        editor.putInt("schoolId",schoolId);
-        editor.putInt("classId",classId);
-        editor.putString("deviceId", deviceId);*/
+        editor.putInt("roleId", roleId);
+        editor.putString("roleName", roleName);
+        editor.putInt("company", company);
 
-        editor.commit(); //4
+        editor.commit();
     }
 
     public SharedPreferences getValue(Context context) {
@@ -53,17 +51,6 @@ public class SharedPreferenceLogin {
 
         editor.clear();
         editor.putBoolean(LOGGEDIN_SHARED_PREF, false);
-        editor.commit();
-    }
-
-    public void removeValue(Context context) {
-        SharedPreferences settings;
-        SharedPreferences.Editor editor;
-
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        editor = settings.edit();
-
-        editor.remove(PREFS_KEY);
         editor.commit();
     }
 }

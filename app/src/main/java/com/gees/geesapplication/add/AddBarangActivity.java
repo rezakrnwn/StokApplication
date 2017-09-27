@@ -92,6 +92,7 @@ public class AddBarangActivity extends AppCompatActivity implements AddBarangVie
             @Override
             public void onClick(View view) {
                 onBackPressed();
+                overridePendingTransition(R.anim.stay,R.anim.slide_out_down);
             }
         });
     }
@@ -104,8 +105,8 @@ public class AddBarangActivity extends AppCompatActivity implements AddBarangVie
             onFailed();
         }else{
             addBarangPresenter.attachView(this);
-            addBarangPresenter.newBarang(namaBarang,satuanId,
-                    sharedPreferenceLogin.getValue(this).getString("apiToken",""));
+            addBarangPresenter.newBarang(sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
+                    namaBarang,satuanId,sharedPreferenceLogin.getValue(this).getString("apiToken",""));
         }
     }
 

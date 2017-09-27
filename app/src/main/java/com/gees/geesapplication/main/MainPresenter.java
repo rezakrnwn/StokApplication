@@ -47,12 +47,12 @@ public class MainPresenter implements BasePresenter<MainView> {
         return this.mainView != null;
     }
 
-    public void getListItem(String token){
+    public void getListItem(int company,String token){
         Log.d("T E S T","123");
         Log.d("T E S T","321");
         Retrofit retrofit = ApiClient.getClient(mainView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Items> itemsCall = apiService.getSingleItem(token);
+        Call<Items> itemsCall = apiService.getBarang(company,token);
         itemsCall.enqueue(new Callback<Items>() {
             @Override
             public void onResponse(Call<Items> call, Response<Items> response) {

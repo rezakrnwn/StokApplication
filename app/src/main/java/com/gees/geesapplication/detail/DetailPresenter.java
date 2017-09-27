@@ -98,10 +98,10 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         return this.detailView != null;
     }
 
-    void addStock(int barangId,int shelfId, int supplierId, double qty, String tanggal, String token){
+    void addStock(int companyId,int barangId,int shelfId, int supplierId, double qty, String tanggal, String token){
         Retrofit retrofit = ApiClient.getClient(detailView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<AddStokBarang> addStokCall = apiService.addStok(barangId,shelfId,supplierId,qty,tanggal,token);
+        Call<AddStokBarang> addStokCall = apiService.addStok(companyId,barangId,shelfId,supplierId,qty,tanggal,token);
         addStokCall.enqueue(new Callback<AddStokBarang>() {
             @Override
             public void onResponse(Call<AddStokBarang> call, retrofit2.Response<AddStokBarang> response) {
@@ -132,10 +132,12 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         });
     }
 
-    void removeStock(int barangId,int shelfId, int customerId, double qty, String tanggal, String token){
+    void removeStock(int company,int barangId,int shelfId, int customerId, double qty,
+                     String tanggal, String token){
         Retrofit retrofit = ApiClient.getClient(detailView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<RemoveStokBarang> removeStokCall = apiService.removeStok(barangId,shelfId,customerId,qty,tanggal,token);
+        Call<RemoveStokBarang> removeStokCall = apiService.removeStok(company,barangId,shelfId,
+                                                customerId,qty,tanggal,token);
         removeStokCall.enqueue(new Callback<RemoveStokBarang>() {
             @Override
             public void onResponse(Call<RemoveStokBarang> call, retrofit2.Response<RemoveStokBarang> response) {
@@ -166,11 +168,11 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         });
     }
 
-    public void getDetailStok(final boolean refresh, final String id, String token){
+    public void getDetailStok(final boolean refresh, final String id, int company, String token){
 
         Retrofit retrofit = ApiClient.getClient(detailView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Items> itemsCall = apiService.getSingleItem(token);
+        Call<Items> itemsCall = apiService.getBarang(company,token);
         itemsCall.enqueue(new Callback<Items>() {
             @Override
             public void onResponse(Call<Items> call, Response<Items> response) {
@@ -532,11 +534,11 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         }
     }
 
-    void getShelf(String token){
+    void getShelf(int company,String token){
         final List<String> stringList = new ArrayList<>();
         Retrofit retrofit = ApiClient.getClient(detailView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Shelf> shelfCall = apiService.getShelf(token);
+        Call<Shelf> shelfCall = apiService.getShelf(company,token);
         shelfCall.enqueue(new Callback<Shelf>() {
             @Override
             public void onResponse(Call<Shelf> call, Response<Shelf> response) {
@@ -599,11 +601,11 @@ public class DetailPresenter implements BasePresenter<DetailView> {
         });
     }
 
-    void getCustomer(final int status, String token){
+    void getCustomer(final int status, int company, String token){
         final List<String> customerList = new ArrayList<>();
         Retrofit retrofit = ApiClient.getClient(detailView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Customer> customerCall = apiService.getCustomer(token);
+        Call<Customer> customerCall = apiService.getCustomer(company,token);
         customerCall.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(Call<Customer> call, Response<Customer> response) {
@@ -613,8 +615,8 @@ public class DetailPresenter implements BasePresenter<DetailView> {
                     if(customer.getStatus()){
                         customerDatumList = customer.getData();
                         for(int i=0;i<customerDatumList.size();i++){
-                            customerList.add(customerDatumList.get(i).getId()+" - "+
-                                    customerDatumList.get(i).getNama());
+                            customerList.add(customerDatumList.get(i).getNama()+" ("
+                                    +customerDatumList.get(i).getId()+")");
                         }
                         if(status == 1){
                             detailView.getCustomerList(customerDatumList,customerList);

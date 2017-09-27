@@ -18,6 +18,15 @@ public class Info {
     @SerializedName("username")
     @Expose
     private String username;
+    @SerializedName("company_id")
+    @Expose
+    private Integer companyId;
+    @SerializedName("role_id")
+    @Expose
+    private Integer roleId;
+    @SerializedName("role_name")
+    @Expose
+    private String roleName;
 
     public Boolean getStatus() {
         return status;
@@ -43,4 +52,27 @@ public class Info {
         this.username = username;
     }
 
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
 }

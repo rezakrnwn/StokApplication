@@ -38,6 +38,7 @@ public interface ApiService {
     Call<ResponseAddBarang> newBarang(
             @Field("Barang[nama]") String nama,
             @Field("Barang[id_satuan]") int stok,
+            @Field("Barang[id_company]") int company,
             @Query("access_token") String token
 
     );
@@ -45,6 +46,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("stokapi/v1/barang/stokin")
     Call<AddStokBarang> addStok(
+            @Field("id_company") int companyId,
             @Field("id_barang") int barangId,
             @Field("id_shelf") int shelfId,
             @Field("id_supplier") int supplierId,
@@ -57,6 +59,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("stokapi/v1/barang/stokout")
     Call<RemoveStokBarang> removeStok(
+            @Field("id_company") int companyId,
             @Field("id_barang") int barangId,
             @Field("id_shelf") int shelfId,
             @Field("id_customer") int customerId,
@@ -76,7 +79,8 @@ public interface ApiService {
     );
 
     @GET("stokapi/v1/barang/currentstok")
-    Call<Items> getSingleItem(
+    Call<Items> getBarang(
+            @Query("company_id") int companyId,
             @Query("access_token") String token
     );
 
@@ -87,6 +91,7 @@ public interface ApiService {
 
     @GET("stokapi/v1/shelf/list")
     Call<Shelf> getShelf(
+            @Query("company_id") int companyId,
             @Query("access_token") String token
     );
 
@@ -107,6 +112,7 @@ public interface ApiService {
 
     @GET("stokapi/v1/customer/list")
     Call<Customer> getCustomer(
+            @Query("company_id") int companyId,
             @Query("access_token") String token
     );
 

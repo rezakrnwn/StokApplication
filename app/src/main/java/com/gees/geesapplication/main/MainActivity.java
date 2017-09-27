@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.gees.geesapplication.adapter.ItemAdapter;
 import com.gees.geesapplication.add.AddBarangActivity;
 import com.gees.geesapplication.auth.LoginActivity;
 import com.gees.geesapplication.config.SharedPreferenceLogin;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.Locale;
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @BindView(R.id.tvUsername)
     TextView tvUsername;
+
+    @BindView(R.id.tvRole)
+    TextView tvRole;
 
     @BindView(R.id.swipeToRefresh)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initToolbar();
+        authRoleView();
 
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1){
             checkPermissionForReadWriteStorage();
@@ -74,14 +80,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         mainPresenter.attachView(this);
         mainPresenter.getSyncAdapter(rvItem);
-        mainPresenter.getListItem(sharedPreferenceLogin.getValue(this).getString("apiToken",""));
-        tvUsername.setText("Selamat datang, " + sharedPreferenceLogin.getValue(this).getString("name",""));
+        mainPresenter.getListItem(sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
+                sharedPreferenceLogin.getValue(this).getString("apiToken",""));
+        tvUsername.setText(sharedPreferenceLogin.getValue(this).getString("name",""));
+        tvRole.setText(sharedPreferenceLogin.getValue(getApplicationContext()).getString("roleName",""));
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mainPresenter.getListItem(sharedPreferenceLogin.
-                        getValue(getApplicationContext()).getString("apiToken",""));
+                mainPresenter.getListItem(sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
+                        sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
             }
         });
 
@@ -104,6 +112,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
         });
     }
 
+    void authRoleView(){
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fabAdd);
+        if(sharedPreferenceLogin.getValue(this).getInt("roleId",0) == 1){
+            fabAdd.setVisibility(View.VISIBLE);
+        }else {
+            fabAdd.setVisibility(View.GONE);
+        }
+    }
+
     void initToolbar(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -112,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @OnClick(R.id.fabAdd)
     void fabAdd(){
         startActivity(new Intent(MainActivity.this,AddBarangActivity.class));
+        overridePendingTransition(R.anim.slide_out_up, R.anim.stay);
     }
 
     @OnClick(R.id.btnLogout)

@@ -54,9 +54,13 @@ public class LoginPresenter implements BasePresenter<LoginView> {
                     if(status){
                         String mApiToken = info.getAccessToken();
                         String mName = info.getUsername();
+                        int mRoleId = info.getRoleId();
+                        String mRoleName = info.getRoleName();
+                        int mCompany = info.getCompanyId();
 
                         SharedPreferenceLogin sharedPreferenceLogin = new SharedPreferenceLogin();
-                        sharedPreferenceLogin.save(loginView.getContext(),mApiToken,mName);
+                        sharedPreferenceLogin.save(loginView.getContext(),mApiToken,mName,mRoleId,
+                                mRoleName,mCompany);
 
                         loginView.onSuccess();
                     }else{

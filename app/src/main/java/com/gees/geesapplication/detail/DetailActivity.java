@@ -128,14 +128,17 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         ButterKnife.bind(this);
         getBundle();
         initToolbar();
+
         strTime = initCurrentTime();
         strDate = initCurrentDate();
 
         detailPresenter.attachView(this);
         detailPresenter.getSyncAdapter(rvStok);
         detailPresenter.getDetailStok(false,String.valueOf(itemId),
+                sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
                 sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
         detailPresenter.getCustomer(0,sharedPreferenceLogin.
+                getValue(getApplicationContext()).getInt("company",0),sharedPreferenceLogin.
                 getValue(getApplicationContext()).getString("apiToken",""));
 
         tvNamaBarang.setText(itemName);
@@ -145,6 +148,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         famTambah = (FloatingActionButton) findViewById(R.id.menu_plus);
         famKurang = (FloatingActionButton) findViewById(R.id.menu_minus);
         famMenu = (FloatingActionMenu) findViewById(R.id.menuFam);
+
+        authRoleView();
 
         detailPresenter.attachView(this);
 
@@ -168,10 +173,23 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
             @Override
             public void onRefresh() {
                 detailPresenter.getDetailStok(true,String.valueOf(itemId),
+                        sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
                         sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
             }
         });
 
+    }
+
+    void authRoleView(){
+        if(sharedPreferenceLogin.getValue(this).getInt("role",0) == 1){
+
+        }else if(sharedPreferenceLogin.getValue(this).getInt("role",0) == 2){
+            Log.d("GG ","2");
+            famKurang.setVisibility(View.GONE);
+        }else if(sharedPreferenceLogin.getValue(this).getInt("role",0) == 3){
+            Log.d("GG ","3");
+            famTambah.setVisibility(View.GONE);
+        }
     }
 
     void initToolbar(){
@@ -222,7 +240,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     void inflaterStok(final int code,String title){
         strDate = null;
         strTime = null;
-        detailPresenter.getShelf(sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
+        detailPresenter.getShelf(sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0)
+                ,sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.fragment_inflater_stok,null);
@@ -285,6 +304,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
             });
         }else{
             detailPresenter.getCustomer(1,sharedPreferenceLogin.
+                    getValue(getApplicationContext()).getInt("company",0),sharedPreferenceLogin.
                     getValue(getApplicationContext()).getString("apiToken",""));
             llCustomer.setVisibility(View.VISIBLE);
             llShelf.setVisibility(View.GONE);
@@ -360,11 +380,13 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
                 dateTime = strDate +" "+ strTime;
                 if (code == 1 && !etStokBarang.getText().toString().isEmpty()){
                     double stokBarang = Double.parseDouble(etStokBarang.getText().toString());
-                    detailPresenter.addStock(itemId,shelfId,supplierId,stokBarang,dateTime,
+                    detailPresenter.addStock(sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
+                            itemId,shelfId,supplierId,stokBarang,dateTime,
                             sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
                 }else if (code == 2 && !etStokBarang.getText().toString().isEmpty()){
                     double stokBarang = Double.parseDouble(etStokBarang.getText().toString());
-                    detailPresenter.removeStock(itemId,shelfId,customerId,stokBarang,dateTime,
+                    detailPresenter.removeStock(sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
+                            itemId,shelfId,customerId,stokBarang,dateTime,
                             sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
                 }else{
                     Toast.makeText(getApplicationContext(),"Proses Gagal",Toast.LENGTH_LONG).show();
@@ -456,12 +478,14 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     @Override
     public void onSuccessAdd() {
         detailPresenter.getDetailStok(false,String.valueOf(itemId),
+                sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
                 sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
     }
 
     @Override
     public void onSuccessRemove() {
         detailPresenter.getDetailStok(false,String.valueOf(itemId),
+                sharedPreferenceLogin.getValue(getApplicationContext()).getInt("company",0),
                 sharedPreferenceLogin.getValue(getApplicationContext()).getString("apiToken",""));
     }
 

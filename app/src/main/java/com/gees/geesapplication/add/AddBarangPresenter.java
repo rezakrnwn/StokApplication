@@ -79,10 +79,10 @@ public class AddBarangPresenter implements BasePresenter<AddBarangView> {
         //return stringList;
     }
 
-    void newBarang(String name, int stok, String token){
+    void newBarang(int company,String name, int stok, String token){
         Retrofit retrofit = ApiClient.getClient(addBarangView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<ResponseAddBarang> addCall = apiService.newBarang(name,stok,token);
+        Call<ResponseAddBarang> addCall = apiService.newBarang(name,stok,company,token);
         addCall.enqueue(new Callback<ResponseAddBarang>() {
             @Override
             public void onResponse(Call<ResponseAddBarang> call, retrofit2.Response<ResponseAddBarang> response) {
