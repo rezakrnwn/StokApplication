@@ -157,8 +157,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     ((CardViewHolder) holder).tvItemStock.setText("Stok : 0.00");
                 }else{
                     ((CardViewHolder) holder).tvItemStock.setText("Stok : "+
-                            barangList.get(position).getStokAkhir());
-                    ((CardViewHolder) holder).itemStock = barangList.get(position).getStokAkhir();
+                            barangList.get(position).getStokBarang());
+                    ((CardViewHolder) holder).itemStock = barangList.get(position).getStokBarang();
                 }
                 break;
             case 1:

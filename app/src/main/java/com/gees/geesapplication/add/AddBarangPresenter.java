@@ -41,16 +41,17 @@ public class AddBarangPresenter implements BasePresenter<AddBarangView> {
         return this.addBarangView != null;
     }
 
-    public void getSatuan(String token){
+    public void getSatuan(int companyId,String token){
         final List<String> stringList = new ArrayList<>();
         Retrofit retrofit = ApiClient.getClient(addBarangView.getContext());
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Satuan> satuanCall = apiService.getSatuan(token);
+        Call<Satuan> satuanCall = apiService.getSatuan(companyId,token);
         satuanCall.enqueue(new Callback<Satuan>() {
             @Override
             public void onResponse(Call<Satuan> call, Response<Satuan> response) {
 
                 if(response.body() != null){
+                    if(response.raw().cacheResponse() != null){}
                     Satuan satuan = response.body();
 
                     if(satuan.getStatus()){

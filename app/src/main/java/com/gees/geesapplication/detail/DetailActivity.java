@@ -181,12 +181,12 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
     }
 
     void authRoleView(){
-        if(sharedPreferenceLogin.getValue(this).getInt("role",0) == 1){
+        if(sharedPreferenceLogin.getValue(this).getInt("roleId",0) == 1){
 
-        }else if(sharedPreferenceLogin.getValue(this).getInt("role",0) == 2){
+        }else if(sharedPreferenceLogin.getValue(this).getInt("roleId",0) == 2){
             Log.d("GG ","2");
             famKurang.setVisibility(View.GONE);
-        }else if(sharedPreferenceLogin.getValue(this).getInt("role",0) == 3){
+        }else if(sharedPreferenceLogin.getValue(this).getInt("roleId",0) == 3){
             Log.d("GG ","3");
             famTambah.setVisibility(View.GONE);
         }
@@ -199,7 +199,9 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                startActivity(new Intent(DetailActivity.this,MainActivity.class));
+                overridePendingTransition(R.anim.slide_to_left, R.anim.stay);
+                /*onBackPressed();*/
             }
         });
     }
@@ -217,7 +219,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,Stok
             itemStock = extras.getDouble("itemStock");
             strItemStock = Double.toString(itemStock);
         }
-
     }
 
     @OnClick(R.id.btnAddStock)

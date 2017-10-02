@@ -39,16 +39,16 @@ public class ApiClient implements BaseView {
         mContext = context;
 
         if (retrofit == null) {
-            httpClient = new OkHttpClient.Builder()
+            /*httpClient = new OkHttpClient.Builder()
                     .addNetworkInterceptor(REWRITE_RESPONSE_INTERCEPTOR)
                     .addInterceptor(OFFLINE_INTERCEPTOR)
                     .addInterceptor(new LoggingInterceptor())
                     .cache(cache)
-                    .build();
+                    .build();*/
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(httpClient)
+                    //.client(httpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

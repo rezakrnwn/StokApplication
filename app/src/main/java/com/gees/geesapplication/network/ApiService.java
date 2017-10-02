@@ -86,6 +86,21 @@ public interface ApiService {
 
     @GET("stokapi/v1/satuan/list")
     Call<Satuan> getSatuan(
+            @Query("company_id") int companyId,
+            @Query("access_token") String token
+    );
+
+    /*@GET("stokapi/v1/satuan/list")
+    Call<Satuan> getSatuan2(
+            @Query("company_id") int companyId,
+            @Query("access_token") String token
+    );*/
+
+    @GET("stokapi/v1/barang/orderby")
+    Call<Items> sortBarangBy(
+            @Query("company_id") int companyId,
+            @Query("field") String field,
+            @Query("sort") String sort,
             @Query("access_token") String token
     );
 

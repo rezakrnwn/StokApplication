@@ -28,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Retrofit;
 
 /**
  * Created by SERVER on 12/09/2017.
@@ -59,8 +60,8 @@ public class AddBarangActivity extends AppCompatActivity implements AddBarangVie
         ButterKnife.bind(this);
 
         addBarangPresenter.attachView(this);
-        addBarangPresenter.getSatuan(sharedPreferenceLogin.getValue(this)
-                .getString("apiToken",""));
+        addBarangPresenter.getSatuan(sharedPreferenceLogin.getValue(this).getInt("company",0),
+                sharedPreferenceLogin.getValue(this).getString("apiToken",""));
 
         initToolbar();
 

@@ -21,6 +21,12 @@ public class Barang {
     @SerializedName("nama")
     @Expose
     private String nama;
+    @SerializedName("stok_barang")
+    @Expose
+    private String stokBarang;
+    @SerializedName("last_update")
+    @Expose
+    private String lastUpdate;
     @SerializedName("stok_akhir")
     @Expose
     private String stokAkhir;
@@ -75,4 +81,21 @@ public class Barang {
     public void setStok(List<Stok> stok) {
         this.stok = stok;
     }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setStokBarang(String stokBarang) {
+        this.stokBarang = stokBarang;
+    }
+
+    public String getStokBarang() {
+        return stokBarang;
+    }
+
 }

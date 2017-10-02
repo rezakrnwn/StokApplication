@@ -96,6 +96,61 @@ public class MainPresenter implements BasePresenter<MainView> {
         });
     }
 
+    public void sortItemBy(int company, String column, String sort ,String token){
+        Log.d("T E S T","123");
+        Log.d("T E S T","321");
+        Retrofit retrofit = ApiClient.getClient(mainView.getContext());
+        ApiService apiService = retrofit.create(ApiService.class);
+        Call<Items> itemsCall = apiService.sortBarangBy(company,column,sort,token);
+        itemsCall.enqueue(new Callback<Items>() {
+            @Override
+            public void onResponse(Call<Items> call, Response<Items> response) {
+
+                Log.d("M A S U K","response");
+
+                if(response.body() != null){
+                    Items items = response.body();
+                    List<Barang> barangList = items.getBarang();
+
+                    if(items.getStatus()){
+                        for(int i=0;i<barangList.size();i++){
+                            barangList.get(i).setRecyclerType(0);
+                        }
+
+                        itemsList.clear();
+                        itemsList.addAll(barangList);
+                        barangArrayList.clear();
+                        barangArrayList.addAll(barangList);
+                        itemAdapter.notifyDataSetChanged();
+                    }else{
+                        /*Toast.makeText(mainView.getContext(), "Data Kosong",
+                                Toast.LENGTH_LONG).show();*/
+                        itemsList.clear();
+                        barangArrayList.clear();
+                        itemAdapter.notifyDataSetChanged();
+                    }
+
+                    mainView.loadSuccess();
+                }else{
+                    /*Toast.makeText(mainView.getContext(), "Cek koneksi internet Anda",
+                            Toast.LENGTH_LONG).show();*/
+                    Log.d("NO CONNECTION "," CHECK YOUR CONNECTION");
+                    itemsList.clear();
+                    barangArrayList.clear();
+                    itemAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Items> call, Throwable t) {
+                Log.d("M A S U K","failure");
+                /*Toast.makeText(mainView.getContext(), "Cek koneksi internet Anda",
+                        Toast.LENGTH_LONG).show();*/
+                mainView.loadSuccess();
+            }
+        });
+    }
+
     public void getSearchResult(String text){
         itemAdapter.filter(text);
         Log.d("GetSearch","111111");
